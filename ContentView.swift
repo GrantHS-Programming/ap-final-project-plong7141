@@ -14,24 +14,43 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             
             VStack {
-                HStack{
-                    DatePicker(selection:  .constant(Date()),
-                               label: { Text("Time") })
-                    
-                    Picker(selection: /*@START_MENU_TOKEN@*/.constant(1)/*@END_MENU_TOKEN@*/,
-                           label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
-                        /*@START_MENU_TOKEN@*/Text("1").tag(1)/*@END_MENU_TOKEN@*/
-                        /*@START_MENU_TOKEN@*/Text("2").tag(2)/*@END_MENU_TOKEN@*/
+                Text("Title to come!")
+                    .font(.title).fontWeight(.bold).foregroundColor(Color("AccentColor")).dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
+                Text("Discription/ info on how to use app/ what to do!! This is to check formating :)")
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color("LightPink"))
+                    .multilineTextAlignment(.center)
+                VStack{
+                    HStack{
+                        DatePicker(selection:  .constant(Date()),
+                                   label: { Text("Time") })
+                        
+                        Picker(selection: /*@START_MENU_TOKEN@*/.constant(1)/*@END_MENU_TOKEN@*/,
+                               label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
+                            /*@START_MENU_TOKEN@*/Text("1").tag(1)/*@END_MENU_TOKEN@*/
+                            /*@START_MENU_TOKEN@*/Text("2").tag(2)/*@END_MENU_TOKEN@*/
+                        }
+                        
                     }
-                    
-                }
-                Toggle(isOn: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Is On@*/.constant(true)/*@END_MENU_TOKEN@*/) {
-                    /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Label@*/Text("Label")/*@END_MENU_TOKEN@*/
+                    Toggle(isOn: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Is On@*/.constant(true)/*@END_MENU_TOKEN@*/) {
+                        /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Label@*/Text("Label")/*@END_MENU_TOKEN@*/
+                    }
+                    .padding()
                 }
                 .padding()
-                Label(/*@START_MENU_TOKEN@*/"Label"/*@END_MENU_TOKEN@*/, systemImage:/*@START_MENU_TOKEN@*/"42.circle"/*@END_MENU_TOKEN@*/)
-                ProgressView(value: 0.5)
-                
+                .background(Rectangle().foregroundColor(.newGreen).cornerRadius(15)
+                    .shadow(radius: 15))
+                .padding()
+                VStack{
+                    Text("Label to come!")
+                    ProgressView(value: 0.5)
+                }
+                .padding()
+                .background(Rectangle()
+                    .foregroundColor(.lightPink)
+                    .cornerRadius(15))
+                .padding()
             }
             
             .padding()
