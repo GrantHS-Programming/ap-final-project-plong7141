@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    // new variables here!
     var body: some View {
         ZStack{
             Color.lightBlue
@@ -56,6 +58,7 @@ struct ContentView: View {
             .padding()
         }
     }
+    // put functions here!!
 }
 
 #Preview {
