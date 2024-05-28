@@ -10,6 +10,10 @@ import SwiftUI
 struct ContentView: View {
     
     // new variables here!
+    @State var infoText: String = "Enter a time beow: "
+    @State var hour: String = ""
+    @State var time: String = ""
+    @State var minute: String = ""
     var body: some View {
         ZStack{
             Color.lightBlue
@@ -23,23 +27,62 @@ struct ContentView: View {
                     .fontWeight(.bold)
                     .foregroundColor(Color("LightPink"))
                     .multilineTextAlignment(.center)
+                
                 VStack{
                     HStack{
-                        DatePicker(selection:  .constant(Date()),
-                                   label: { Text("Time") })
-                        
-                        Picker(selection: /*@START_MENU_TOKEN@*/.constant(1)/*@END_MENU_TOKEN@*/,
-                               label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
-                            /*@START_MENU_TOKEN@*/Text("1").tag(1)/*@END_MENU_TOKEN@*/
-                            /*@START_MENU_TOKEN@*/Text("2").tag(2)/*@END_MENU_TOKEN@*/
+                        VStack{
+                            Text(infoText)
+                                .padding()
+                                .background(Color.lightPink)
+                            HStack{
+                                TextField("Enter Hour", text: $hour)
+                                    .background(Color.lightPink)
+                                    .keyboardType(.decimalPad)
+                                    .padding()
+                                Spacer()
+                                TextField("Enter Minute", text: $minute)
+                                    .background(Color.lightPink)
+                                    .keyboardType(.decimalPad)
+                                    .padding()
+                                
+                            }
+                            Button(action: {checking()})
+                            {Text("Submit")}
                         }
                         
+                        
                     }
-                    Toggle(isOn: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Is On@*/.constant(true)/*@END_MENU_TOKEN@*/) {
-                        /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Label@*/Text("Label")/*@END_MENU_TOKEN@*/
-                    }
-                    .padding()
+                  
                 }
+                .padding()
+                .background(Rectangle().foregroundColor(.newGreen).cornerRadius(15)
+                    .shadow(radius: 15))
+                .padding()
+                // edit this for a time picker! make it look diffrent too!!
+                VStack{
+                    HStack{
+                        VStack{
+                            // make another info text
+                            Text(infoText)
+                                .padding()
+                                .background(Color.lightPink)
+                            HStack{
+                                TextField("Enter a time", text: $time)
+                                    .background(Color.lightPink)
+                                    .keyboardType(.decimalPad)
+                                    .padding()
+                                
+                                
+                            }
+                            Button(action: {checking()})
+                            {Text("Submit")}
+                        }
+                        
+                        
+                    }
+                  
+                }
+                
                 .padding()
                 .background(Rectangle().foregroundColor(.newGreen).cornerRadius(15)
                     .shadow(radius: 15))
@@ -59,6 +102,23 @@ struct ContentView: View {
         }
     }
     // put functions here!!
+    func checking() {
+        if Int(hour) == nil {
+            infoText = "Please enter an hour"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
+                infoText = "Enter a time below:"
+            }
+        }
+        else if Int(minute) == nil {
+            infoText = "Please enter a minute"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
+                infoText = "Enter a time below:"
+            }
+        }
+        else{
+            infoText = "Data inputed"
+        }
+    }
 }
 
 #Preview {
