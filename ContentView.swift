@@ -11,6 +11,7 @@ struct ContentView: View {
     
     // new variables here!
     @State var infoText: String = "Enter a time beow: "
+    @State var infoText2: String = "Enter an amount of time below (in hours): "
     @State var hour: String = ""
     @State var time: String = ""
     @State var minute: String = ""
@@ -34,16 +35,23 @@ struct ContentView: View {
                             Text(infoText)
                                 .padding()
                                 .background(Color.lightPink)
+                                .multilineTextAlignment(.center)
+                                .cornerRadius(10)
                             HStack{
                                 TextField("Enter Hour", text: $hour)
                                     .background(Color.lightPink)
                                     .keyboardType(.decimalPad)
+                                    .cornerRadius(10)
+                                    .multilineTextAlignment(.center)
                                     .padding()
                                 Spacer()
                                 TextField("Enter Minute", text: $minute)
                                     .background(Color.lightPink)
                                     .keyboardType(.decimalPad)
+                                    .cornerRadius(10)
+                                    .multilineTextAlignment(.center)
                                     .padding()
+                                    
                                 
                             }
                             Button(action: {checking()})
@@ -63,18 +71,23 @@ struct ContentView: View {
                     HStack{
                         VStack{
                             // make another info text
-                            Text(infoText)
+                            Text(infoText2)
                                 .padding()
-                                .background(Color.lightPink)
+                                .background(Color.newGreen)
+                                .multilineTextAlignment(.center)
+                                .cornerRadius(10)
                             HStack{
                                 TextField("Enter a time", text: $time)
-                                    .background(Color.lightPink)
+                                    .background(Color.newGreen)
                                     .keyboardType(.decimalPad)
+                                    .multilineTextAlignment(.center)
+                                    .cornerRadius(10)
+                                
                                     .padding()
                                 
                                 
                             }
-                            Button(action: {checking()})
+                            Button(action: {checkingTime()})
                             {Text("Submit")}
                         }
                         
@@ -84,7 +97,7 @@ struct ContentView: View {
                 }
                 
                 .padding()
-                .background(Rectangle().foregroundColor(.newGreen).cornerRadius(15)
+                .background(Rectangle().foregroundColor(.lightPink).cornerRadius(15)
                     .shadow(radius: 15))
                 .padding()
                 VStack{
@@ -93,7 +106,7 @@ struct ContentView: View {
                 }
                 .padding()
                 .background(Rectangle()
-                    .foregroundColor(.lightPink)
+                    .foregroundColor(.lightOrange)
                     .cornerRadius(15))
                 .padding()
             }
@@ -116,7 +129,18 @@ struct ContentView: View {
             }
         }
         else{
-            infoText = "Data inputed"
+            infoText = "Data inputed!!"
+        }
+    }
+    func checkingTime() {
+        if Int(time) == nil {
+            infoText2 = "Please enter a time"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
+                infoText2 = "Enter an amount of time below (in hours):"
+            }
+        }
+        else{
+            infoText2 = "Data inputed!!"
         }
     }
 }
