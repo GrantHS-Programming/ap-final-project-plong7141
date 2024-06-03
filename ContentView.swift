@@ -15,6 +15,9 @@ struct ContentView: View {
     @State var hour: String = ""
     @State var time: String = ""
     @State var minute: String = ""
+    @State var countDownTimer: Int = 5
+    @State var timerRunning = false
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     var body: some View {
         ZStack{
             Color.lightBlue
@@ -101,8 +104,26 @@ struct ContentView: View {
                     .shadow(radius: 15))
                 .padding()
                 VStack{
-                    Text("Label to come!")
-                    ProgressView(value: 0.5)
+                    Text("\(countDownTimer)")
+                        .onReceive(timer) {_ in
+                            if countDownTimer > 0 && timerRunning{
+                                countDownTimer -= 1
+                            }
+                            else{
+                                timerRunning = false
+                            }
+                        }
+                        .font(.system(size: 50, weight: .bold))
+                        .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                    HStack(spacing: 30){
+                        Button("Start"){
+                            timerRunning = true
+                        }
+                        .foregroundColor(.newGreen)
+                        Button("Reset"){
+                            countDownTimer = countDownTimer + 5
+                        }
+                    }
                 }
                 .padding()
                 .background(Rectangle()
@@ -140,7 +161,10 @@ struct ContentView: View {
             }
         }
         else{
+            // fix this to make it actually work
+            // var intTime: Int = (Int(time))
             infoText2 = "Data inputed!!"
+            // countDownTimer = (intTime * 60)
         }
     }
 }
