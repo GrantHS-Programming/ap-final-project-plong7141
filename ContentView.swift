@@ -15,9 +15,13 @@ struct ContentView: View {
     @State var hour: String = ""
     @State var time: String = ""
     @State var minute: String = ""
-    @State var countDownTimer: Int = 5
+    @State var countDownTimer: Int = 0
+    @State var countDownTimerH: Int = 0
+    @State var countDownTimerM: Int = 0
     @State var timerRunning = false
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let timerH = Timer.publish(every: 3600, on: .main, in: .common).autoconnect()
+    let timerM = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     var body: some View {
         ZStack{
             Color.lightBlue
@@ -104,32 +108,92 @@ struct ContentView: View {
                     .shadow(radius: 15))
                 .padding()
                 VStack{
-                    Text("\(countDownTimer)")
-                        .onReceive(timer) {_ in
-                            if countDownTimer > 0 && timerRunning{
-                                countDownTimer -= 1
+                    HStack{
+                        // Hours
+                        VStack{
+                            Text("\(countDownTimerH)")
+                                .onReceive(timerH) {_ in
+                                    if countDownTimerH > 0 && timerRunning{
+                                        countDownTimerH -= 1
+                                    }
+                                    else{
+                                        timerRunning = false
+                                    }
+                                }
+                                .font(.system(size: 50, weight: .bold))
+                                .opacity(0.8)
+                            HStack(spacing: 30){
+                                Button("+1"){
+                                    countDownTimerH = countDownTimerH + 3600
+                                }
                             }
-                            else{
-                                timerRunning = false
+                        }
+                        .padding()
+                        .background(Rectangle()
+                            .foregroundColor(.lightOrange)
+                            .cornerRadius(15))
+                        .padding()
+                        Text(":")
+                            .font(.system(size: 50, weight: .bold))
+                            .opacity(0.8)
+                        // minutes
+                        VStack{
+                            Text("\(countDownTimerM)")
+                                .onReceive(timerM) {_ in
+                                    if countDownTimerM > 0 && timerRunning{
+                                        countDownTimerM -= 1
+                                    }
+                                    else{
+                                        timerRunning = false
+                                    }
+                                }
+                                .font(.system(size: 50, weight: .bold))
+                                .opacity(0.8)
+                            HStack(spacing: 30){
+                                Button("+1"){
+                                    countDownTimerM = countDownTimerM + 60
+                                }
                             }
                         }
-                        .font(.system(size: 50, weight: .bold))
-                        .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
-                    HStack(spacing: 30){
-                        Button("Start"){
-                            timerRunning = true
+                        .padding()
+                        .background(Rectangle()
+                            .foregroundColor(.lightOrange)
+                            .cornerRadius(15))
+                        .padding()
+                        Text(":")
+                            .font(.system(size: 50, weight: .bold))
+                            .opacity(0.8)
+                        // seconds
+                        VStack{
+                            Text("\(countDownTimer)")
+                                .onReceive(timer) {_ in
+                                    if countDownTimer > 0 && timerRunning{
+                                        countDownTimer -= 1
+                                    }
+                                    else{
+                                        timerRunning = false
+                                    }
+                                }
+                                .font(.system(size: 50, weight: .bold))
+                                .opacity(0.8)
+                            HStack(spacing: 30){
+                                Button("+1"){
+                                    countDownTimer = countDownTimer + 1
+                                }
+                            }
                         }
-                        .foregroundColor(.newGreen)
-                        Button("Reset"){
-                            countDownTimer = countDownTimer + 5
-                        }
+                        .padding()
+                        .background(Rectangle()
+                            .foregroundColor(.lightOrange)
+                            .cornerRadius(15))
+                        .padding()
+                        
+                    }
+                    Button("Start"){
+                        timerRunning = true
                     }
                 }
-                .padding()
-                .background(Rectangle()
-                    .foregroundColor(.lightOrange)
-                    .cornerRadius(15))
-                .padding()
+                
             }
             
             .padding()
@@ -159,12 +223,6 @@ struct ContentView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
                 infoText2 = "Enter an amount of time below (in hours):"
             }
-        }
-        else{
-            // fix this to make it actually work
-            // var intTime: Int = (Int(time))
-            infoText2 = "Data inputed!!"
-            // countDownTimer = (intTime * 60)
         }
     }
 }
