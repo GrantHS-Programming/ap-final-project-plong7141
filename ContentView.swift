@@ -19,9 +19,12 @@ struct ContentView: View {
     @State var countDownTimerH: Int = 0
     @State var countDownTimerM: Int = 0
     @State var timerRunning = false
+    @State var timerRunningH = false
+    @State var timerRunningM = false
+    @State var run = false
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    let timerH = Timer.publish(every: 3600, on: .main, in: .common).autoconnect()
-    let timerM = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+    let timerH = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let timerM = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     var body: some View {
         ZStack{
             Color.lightBlue
@@ -113,17 +116,17 @@ struct ContentView: View {
                         VStack{
                             Text("\(countDownTimerH)")
                                 .onReceive(timerH) {_ in
-                                    if countDownTimerH > 0 && timerRunning{
+                                    if countDownTimerH > 0 && timerRunningH{
                                         countDownTimerH -= 1
                                     }
                                     else{
-                                        timerRunning = false
+                                        timerRunningH = false
                                     }
                                 }
                                 .font(.system(size: 50, weight: .bold))
                                 .opacity(0.8)
                             HStack(spacing: 30){
-                                Button("+1"){
+                                Button("+1 Hour"){
                                     countDownTimerH = countDownTimerH + 3600
                                 }
                             }
@@ -140,17 +143,18 @@ struct ContentView: View {
                         VStack{
                             Text("\(countDownTimerM)")
                                 .onReceive(timerM) {_ in
-                                    if countDownTimerM > 0 && timerRunning{
+                                    if countDownTimerM > 0 && timerRunningM{
                                         countDownTimerM -= 1
                                     }
-                                    else{
-                                        timerRunning = false
+                                    else if countDownTimerM <= 0 && run{
+                                        timerRunningM = false
+                                        timerRunningH = true
                                     }
                                 }
                                 .font(.system(size: 50, weight: .bold))
                                 .opacity(0.8)
                             HStack(spacing: 30){
-                                Button("+1"){
+                                Button("+1 Min"){
                                     countDownTimerM = countDownTimerM + 60
                                 }
                             }
@@ -170,14 +174,15 @@ struct ContentView: View {
                                     if countDownTimer > 0 && timerRunning{
                                         countDownTimer -= 1
                                     }
-                                    else{
+                                    else if countDownTimer <= 0 && run{
                                         timerRunning = false
+                                        timerRunningM = true
                                     }
                                 }
                                 .font(.system(size: 50, weight: .bold))
                                 .opacity(0.8)
                             HStack(spacing: 30){
-                                Button("+1"){
+                                Button("+1 Sec"){
                                     countDownTimer = countDownTimer + 1
                                 }
                             }
@@ -191,6 +196,7 @@ struct ContentView: View {
                     }
                     Button("Start"){
                         timerRunning = true
+                        run = true
                     }
                 }
                 
