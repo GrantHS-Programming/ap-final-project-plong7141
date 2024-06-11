@@ -15,6 +15,7 @@ struct ContentView: View {
     @State var hour: String = ""
     @State var time: String = ""
     @State var minute: String = ""
+    @State var second: String = ""
     @State var countDownTimer: Int = 0
     @State var countDownTimerH: Int = 0
     @State var countDownTimerM: Int = 0
@@ -31,9 +32,9 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             
             VStack {
-                Text("Title to come!")
+                Text("Welcome To My App!")
                     .font(.title).fontWeight(.bold).foregroundColor(Color("AccentColor")).dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
-                Text("Discription/ info on how to use app/ what to do!! This is to check formating :)")
+                Text("This is my timer app. Feel free to enter your time in the box below or manually then start your timer! (Note: the timer runs in seconds)")
                     .font(.subheadline)
                     .fontWeight(.bold)
                     .foregroundColor(Color("LightPink"))
@@ -44,19 +45,26 @@ struct ContentView: View {
                         VStack{
                             Text(infoText)
                                 .padding()
-                                .background(Color.lightPink)
+                                .background(Color.newGreen)
                                 .multilineTextAlignment(.center)
                                 .cornerRadius(10)
                             HStack{
-                                TextField("Enter Hour", text: $hour)
-                                    .background(Color.lightPink)
+                                TextField("Hour", text: $hour)
+                                    .background(Color.newGreen)
                                     .keyboardType(.decimalPad)
                                     .cornerRadius(10)
                                     .multilineTextAlignment(.center)
                                     .padding()
                                 Spacer()
-                                TextField("Enter Minute", text: $minute)
-                                    .background(Color.lightPink)
+                                TextField("Minute", text: $minute)
+                                    .background(Color.newGreen)
+                                    .keyboardType(.decimalPad)
+                                    .cornerRadius(10)
+                                    .multilineTextAlignment(.center)
+                                    .padding()
+                                Spacer()
+                                TextField("Second", text: $second)
+                                    .background(Color.newGreen)
                                     .keyboardType(.decimalPad)
                                     .cornerRadius(10)
                                     .multilineTextAlignment(.center)
@@ -73,47 +81,15 @@ struct ContentView: View {
                   
                 }
                 .padding()
-                .background(Rectangle().foregroundColor(.newGreen).cornerRadius(15)
-                    .shadow(radius: 15))
-                .padding()
-                // edit this for a time picker! make it look diffrent too!!
-                VStack{
-                    HStack{
-                        VStack{
-                            // make another info text
-                            Text(infoText2)
-                                .padding()
-                                .background(Color.newGreen)
-                                .multilineTextAlignment(.center)
-                                .cornerRadius(10)
-                            HStack{
-                                TextField("Enter a time", text: $time)
-                                    .background(Color.newGreen)
-                                    .keyboardType(.decimalPad)
-                                    .multilineTextAlignment(.center)
-                                    .cornerRadius(10)
-                                
-                                    .padding()
-                                
-                                
-                            }
-                            Button(action: {checkingTime()})
-                            {Text("Submit")}
-                        }
-                        
-                        
-                    }
-                  
-                }
-                
-                .padding()
                 .background(Rectangle().foregroundColor(.lightPink).cornerRadius(15)
                     .shadow(radius: 15))
                 .padding()
+                Text("Timer: ")
+                    .font(.title).fontWeight(.bold).foregroundColor(Color.blue).dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
+                
                 VStack{
-                    HStack{
                         // Hours
-                        VStack{
+                        HStack{
                             Text("\(countDownTimerH)")
                                 .onReceive(timerH) {_ in
                                     if countDownTimerH > 0 && timerRunningH{
@@ -135,11 +111,8 @@ struct ContentView: View {
                         .background(Rectangle()
                             .foregroundColor(.lightOrange)
                             .cornerRadius(15))
-                        .padding()
-                        Text(":")
-                            .font(.system(size: 50, weight: .bold))
-                            .opacity(0.8)
                         // minutes
+                    HStack{
                         VStack{
                             Text("\(countDownTimerM)")
                                 .onReceive(timerM) {_ in
@@ -194,11 +167,31 @@ struct ContentView: View {
                         .padding()
                         
                     }
-                    Button("Start"){
-                        timerRunning = true
-                        run = true
+                    HStack{
+                        Button("Start"){
+                            timerRunning = true
+                            run = true
+                        }
+                        .foregroundColor(.blue)
+                        Text("   ")
+                        Button("Reset"){
+                            countDownTimerH = 0
+                            countDownTimerM = 0
+                            countDownTimer = 0
+                            timerRunning = false
+                            timerRunningH = false
+                            timerRunningM = false
+                            hour = ""
+                            minute = ""
+                            second = ""
+                            infoText = "Enter a time below:"
+                        }
+                        .foregroundColor(.lightPink)
                     }
                 }
+                .padding()
+                .background(Rectangle().foregroundColor(.newGreen).cornerRadius(15))
+                // here
                 
             }
             
@@ -219,8 +212,20 @@ struct ContentView: View {
                 infoText = "Enter a time below:"
             }
         }
+        else if Int(second) == nil {
+            infoText = "Please enter a second"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
+                infoText = "Enter a time below:"
+            }
+        }
         else{
             infoText = "Data inputed!!"
+            let convertHour = Int(hour)! * 3600
+            countDownTimerH = convertHour
+            let convertMinute = Int(minute)! * 60
+            countDownTimerM = convertMinute
+            let convertSecond = Int(second)! * 1
+            countDownTimer = convertSecond
         }
     }
     func checkingTime() {
